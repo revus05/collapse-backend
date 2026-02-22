@@ -18,15 +18,20 @@ public class UserDTO {
     @Nullable
     private String image;
 
-    @Schema(description = "Username", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String username;
+    @Schema(description = "FirstName", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String firstName;
+
+    @Schema(description = "LastName", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String lastName;
+
+    @Schema(description = "MiddleName", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String middleName;
 
     @Schema(description = "Email address", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
-    @Schema(description = "User's telegram id", requiredMode = Schema.RequiredMode.REQUIRED)
-    @Nullable
-    private Long telegramId;
+    @Schema(description = "Phone number", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String phone;
 
     @Schema(description = "Creation timestamp", type = "string", format = "date-time", requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant createdAt;
@@ -37,9 +42,11 @@ public class UserDTO {
     public UserDTO(User user) {
         this.uuid = user.getUuid();
         this.image = user.getImage();
-        this.username = user.getUsername();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.middleName = user.getMiddleName();
         this.email = user.getEmail();
-        this.telegramId = user.getTelegramId();
+        this.phone = user.getPhone();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
     }

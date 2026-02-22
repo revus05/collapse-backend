@@ -18,7 +18,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDTO signUpUser(SignUpUserRequestDTO signUpUserRequestDTO) throws UserAlreadyExistsException {
-        checkUserExists(signUpUserRequestDTO.getEmail(), signUpUserRequestDTO.getUsername());
+        checkUserExists(signUpUserRequestDTO.getEmail(), signUpUserRequestDTO.getPhone());
 
         String encodedPassword = passwordEncoder.encode(signUpUserRequestDTO.getPassword());
         signUpUserRequestDTO.setPassword(encodedPassword);
@@ -41,10 +41,10 @@ public class UserService {
         return new UserDTO(foundUser);
     }
 
-    private void checkUserExists(String email, String username) {
-        userRepo.findByUsername(username)
+    private void checkUserExists(String email, String phone) {
+        userRepo.findByPhone(phone)
                 .ifPresent(user -> {
-                    throw new UserAlreadyExistsException("username", "Имя пользователя занято");
+                    throw new UserAlreadyExistsException("phone", "Имя пользователя занято");
                 });
 
         userRepo.findByEmail(email)

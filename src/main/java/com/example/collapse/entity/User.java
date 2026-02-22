@@ -24,17 +24,23 @@ public class User {
 
     private String image;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String middleName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String phone;
+
     @Column(nullable = false)
     private String password;
-
-    @Column(unique = true)
-    private Long telegramId;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -47,8 +53,11 @@ public class User {
     public User() {}
 
     public User(SignUpUserRequestDTO requestBody) {
-        this.username = requestBody.getUsername();
+        this.firstName = requestBody.getFirstName();
+        this.lastName = requestBody.getLastName();
+        this.middleName = requestBody.getMiddleName();
         this.email = requestBody.getEmail();
+        this.phone = requestBody.getPhone();
         this.password = requestBody.getPassword();
     }
 }
