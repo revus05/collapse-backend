@@ -1,6 +1,8 @@
 package com.example.collapse.dto.user;
 
 import com.example.collapse.entity.User;
+import com.example.collapse.enums.Currency;
+import com.example.collapse.enums.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
@@ -33,6 +35,12 @@ public class UserDTO {
     @Schema(description = "Phone number", requiredMode = Schema.RequiredMode.REQUIRED)
     private String phone;
 
+    @Schema(description = "Preferred currency", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Currency currency;
+
+    @Schema(description = "User role", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Role role;
+
     @Schema(description = "Creation timestamp", type = "string", format = "date-time", requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant createdAt;
 
@@ -47,6 +55,8 @@ public class UserDTO {
         this.middleName = user.getMiddleName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
+        this.currency = user.getCurrency();
+        this.role = user.getRole();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
     }

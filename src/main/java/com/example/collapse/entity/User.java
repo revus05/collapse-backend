@@ -1,6 +1,8 @@
 package com.example.collapse.entity;
 
 import com.example.collapse.dto.user.SignUpUserRequestDTO;
+import com.example.collapse.enums.Currency;
+import com.example.collapse.enums.Role;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,10 +39,16 @@ public class User {
     private String email;
 
     @Column(nullable = false, unique = true)
-    private String phone;
+    private String phone    ;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private Currency currency = Currency.BYN;
+
+    @Column(nullable = false)
+    private Role role = Role.USER;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

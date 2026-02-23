@@ -2,6 +2,7 @@ package com.example.collapse.service;
 
 import com.example.collapse.dto.user.SignInUserRequestDTO;
 import com.example.collapse.dto.user.SignUpUserRequestDTO;
+import com.example.collapse.dto.user.UpdateCurrencyRequestDTO;
 import com.example.collapse.dto.user.UserDTO;
 import com.example.collapse.entity.User;
 import com.example.collapse.exception.UnauthorizedException;
@@ -41,10 +42,23 @@ public class UserService {
         return new UserDTO(foundUser);
     }
 
+    public UserDTO updateCurrency(String userUuid, UpdateCurrencyRequestDTO dto) throws UnauthorizedException {
+        User foundUser = userRepo.findById(userUuid)
+            .orElseThrow(() -> new UnauthorizedException("Нет пользователя для такого uuid"));
+
+        foundUser.setCurrency(dto.getCurrency());
+
+        System.out.println(dto.getCurrency());
+
+        userRepo.save(foundUser);
+
+        return new UserDTO(foundUser);
+    }
+
     private void checkUserExists(String email, String phone) {
         userRepo.findByPhone(phone)
                 .ifPresent(user -> {
-                    throw new UserAlreadyExistsException("phone", "Имя пользователя занято");
+                    throw new UserAlreadyExistsException("phone", "Пользователь с таким телефоном уже существует");
                 });
 
         userRepo.findByEmail(email)

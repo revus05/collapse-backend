@@ -3,6 +3,7 @@ package com.example.collapse.controller;
 import com.example.collapse.dto.response.Response;
 import com.example.collapse.dto.user.SignInUserRequestDTO;
 import com.example.collapse.dto.user.SignUpUserRequestDTO;
+import com.example.collapse.dto.user.UpdateCurrencyRequestDTO;
 import com.example.collapse.dto.user.UserDTO;
 import com.example.collapse.service.JwtService;
 import com.example.collapse.service.UserService;
@@ -63,5 +64,13 @@ public class UserController {
     public Response singOut(HttpServletResponse response, HttpServletRequest request) {
         response.addCookie(jwtService.createJwtCookie(request, "", 0));
         return new Response("Пользователь успешно вышел", HttpStatus.OK);
+    }
+
+
+    @PostMapping("/update-currency")
+    public Response updateCurrency(@Valid @RequestBody UpdateCurrencyRequestDTO updateCurrencyRequestDTO) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO updatedUser = userService.updateCurrency(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername(), updateCurrencyRequestDTO);
+        return new Response("Пользователь успешно вышел", HttpStatus.OK, updatedUser);
     }
 }
