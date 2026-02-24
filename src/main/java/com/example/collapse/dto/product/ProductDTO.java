@@ -25,10 +25,10 @@ public class ProductDTO {
     private String title;
 
     @Schema(description = "Inside color", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Colors insideColor;
+    private ArrayList<Colors> insideColors;
 
     @Schema(description = "Outside color", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Colors outsideColor;
+    private ArrayList<Colors> outsideColors;
 
     @Schema(description = "Price in BYN", requiredMode = Schema.RequiredMode.REQUIRED)
     private BigDecimal priceBYN;
@@ -57,8 +57,8 @@ public class ProductDTO {
         this.uuid = product.getUuid();
         this.images = product.getImages();
         this.title = product.getTitle();
-        this.insideColor = product.getInsideColor();
-        this.outsideColor = product.getOutsideColor();
+        this.insideColors = product.getInsideColors();
+        this.outsideColors = product.getOutsideColors();
         this.priceBYN = product.getPriceBYN();
         this.priceRUB = product.getPriceRUB();
         this.discountPriceBYN = product.getDiscountPriceBYN();

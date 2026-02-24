@@ -30,11 +30,11 @@ public class Product {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, unique = true)
-    private Colors insideColor;
+    @Column(nullable = false)
+    private ArrayList<Colors> insideColors;
 
-    @Column(nullable = false, unique = true)
-    private Colors outsideColor;
+    @Column(nullable = false)
+    private ArrayList<Colors> outsideColors;
 
     @Column(nullable = false)
     private BigDecimal priceBYN;
@@ -62,8 +62,8 @@ public class Product {
     public Product(ProductRequestDTO dto) {
         this.images = dto.getImages();
         this.title = dto.getTitle();
-        this.insideColor = dto.getInsideColor();
-        this.outsideColor = dto.getOutsideColor();
+        this.insideColors = dto.getInsideColors();
+        this.outsideColors = dto.getOutsideColors();
         this.priceBYN = dto.getPriceBYN();
         this.priceRUB = dto.getPriceRUB();
         this.discountPriceBYN = dto.getDiscountPriceBYN();

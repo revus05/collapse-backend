@@ -22,11 +22,11 @@ public class ProductRequestDTO {
 
     @Schema(description = "Цвет внутри", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
-    private Colors insideColor;
+    private ArrayList<Colors> insideColors;
 
     @Schema(description = "Цвет снаружи", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
-    private Colors outsideColor;
+    private ArrayList<Colors> outsideColors;
 
     @Schema(description = "Цена BYN", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull

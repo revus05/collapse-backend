@@ -32,8 +32,8 @@ public class ProductService {
         Product product = productRepo.findById(uuid).orElseThrow();
         product.setTitle(dto.getTitle());
         product.setImages(dto.getImages());
-        product.setInsideColor(dto.getInsideColor());
-        product.setOutsideColor(dto.getOutsideColor());
+        product.setInsideColors(dto.getInsideColors());
+        product.setOutsideColors(dto.getOutsideColors());
         product.setPriceBYN(dto.getPriceBYN());
         product.setPriceRUB(dto.getPriceRUB());
         product.setDiscountPriceBYN(dto.getDiscountPriceBYN());
