@@ -2,6 +2,7 @@ package com.example.collapse.entity;
 
 import com.example.collapse.dto.product.ProductRequestDTO;
 import com.example.collapse.enums.Colors;
+import com.example.collapse.enums.Tags;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class Product {
     private ArrayList<Colors> outsideColors;
 
     @Column(nullable = false)
+    private ArrayList<Tags> tags;
+
+    @Column(nullable = false)
     private BigDecimal priceBYN;
 
     @Column(nullable = false)
@@ -46,6 +50,7 @@ public class Product {
 
     private BigDecimal discountPriceRUB;
 
+    @Lob
     @Column(nullable = false)
     private String description;
 
@@ -64,6 +69,7 @@ public class Product {
         this.title = dto.getTitle();
         this.insideColors = dto.getInsideColors();
         this.outsideColors = dto.getOutsideColors();
+        this.tags = dto.getTags();
         this.priceBYN = dto.getPriceBYN();
         this.priceRUB = dto.getPriceRUB();
         this.discountPriceBYN = dto.getDiscountPriceBYN();

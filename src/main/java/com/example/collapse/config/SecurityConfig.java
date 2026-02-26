@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,12 +42,16 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/users/sign-up")
+                                auth
+                                        // auth
+                                        .requestMatchers("/users/sign-up", "/users/sign-in", "/users/sign-out")
                                         .permitAll()
-                                        .requestMatchers("/users/sign-in")
+
+                                        //products
+                                        .requestMatchers(HttpMethod.GET, "/products", "/products/{uuid}")
                                         .permitAll()
-                                        .requestMatchers("/users/sign-out")
-                                        .permitAll()
+
+                                        // swagger
                                         .requestMatchers(
                                                 "/swagger-ui/**",
                                                 "/v3/api-docs/**",
@@ -56,6 +61,8 @@ public class SecurityConfig {
                                                 "/swagger-ui.html",
                                                 "/webjars/**")
                                         .permitAll()
+
+                                        // everything else
                                         .anyRequest()
                                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

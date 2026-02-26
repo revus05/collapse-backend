@@ -2,6 +2,7 @@ package com.example.collapse.dto.product;
 
 import com.example.collapse.entity.Product;
 import com.example.collapse.enums.Colors;
+import com.example.collapse.enums.Tags;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class ProductDTO {
 
     @Schema(description = "Outside color", requiredMode = Schema.RequiredMode.REQUIRED)
     private ArrayList<Colors> outsideColors;
+
+    @Schema(description = "Product tags", requiredMode = Schema.RequiredMode.REQUIRED)
+    private ArrayList<Tags> tags;
 
     @Schema(description = "Price in BYN", requiredMode = Schema.RequiredMode.REQUIRED)
     private BigDecimal priceBYN;
@@ -59,6 +63,7 @@ public class ProductDTO {
         this.title = product.getTitle();
         this.insideColors = product.getInsideColors();
         this.outsideColors = product.getOutsideColors();
+        this.tags = product.getTags();
         this.priceBYN = product.getPriceBYN();
         this.priceRUB = product.getPriceRUB();
         this.discountPriceBYN = product.getDiscountPriceBYN();

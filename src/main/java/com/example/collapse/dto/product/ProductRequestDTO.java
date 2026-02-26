@@ -1,7 +1,9 @@
 package com.example.collapse.dto.product;
 
 import com.example.collapse.enums.Colors;
+import com.example.collapse.enums.Tags;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -27,6 +29,9 @@ public class ProductRequestDTO {
     @Schema(description = "Цвет снаружи", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private ArrayList<Colors> outsideColors;
+
+    @Column(nullable = false)
+    private ArrayList<Tags> tags;
 
     @Schema(description = "Цена BYN", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
