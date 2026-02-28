@@ -12,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Hidden
@@ -39,7 +41,7 @@ public class User {
     private String email;
 
     @Column(nullable = false, unique = true)
-    private String phone    ;
+    private String phone;
 
     @Column(nullable = false)
     private String password;
@@ -50,12 +52,21 @@ public class User {
     @Column(nullable = false)
     private Role role = Role.USER;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_cart_products",
+        joinColumns = @JoinColumn(name = "user_uuid"),
+        inverseJoinColumns = @JoinColumn(name = "product_uuid")
+    )
+    private List<Product> cart = new ArrayList<>();
+
     @CreatedDate
-    @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
     private Instant updatedAt;
 
     public User() {}

@@ -47,7 +47,6 @@ public class Product {
     private BigDecimal priceRUB;
 
     private BigDecimal discountPriceBYN;
-
     private BigDecimal discountPriceRUB;
 
     @Lob
@@ -55,11 +54,9 @@ public class Product {
     private String description;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
     private Instant updatedAt;
 
     public Product() {}

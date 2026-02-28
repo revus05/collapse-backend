@@ -13,23 +13,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepo productRepo;
+    private final ProductRepo productRepository;
 
     public ProductDTO createProduct(ProductRequestDTO dto) {
         Product product = new Product(dto);
-        return new ProductDTO(productRepo.save(product));
+        return new ProductDTO(productRepository.save(product));
     }
 
     public List<ProductDTO> getAllProducts() {
-        return productRepo.findAll().stream().map(ProductDTO::new).collect(Collectors.toList());
+        return productRepository.findAll().stream().map(ProductDTO::new).collect(Collectors.toList());
     }
 
     public ProductDTO getProductById(String uuid) {
-        return productRepo.findById(uuid).map(ProductDTO::new).orElseThrow();
+        return productRepository.findById(uuid).map(ProductDTO::new).orElseThrow();
     }
 
     public ProductDTO updateProduct(String uuid, ProductRequestDTO dto) {
-        Product product = productRepo.findById(uuid).orElseThrow();
+        Product product = productRepository.findById(uuid).orElseThrow();
         product.setTitle(dto.getTitle());
         product.setImages(dto.getImages());
         product.setInsideColors(dto.getInsideColors());
@@ -39,10 +39,10 @@ public class ProductService {
         product.setDiscountPriceBYN(dto.getDiscountPriceBYN());
         product.setDiscountPriceRUB(dto.getDiscountPriceRUB());
         product.setDescription(dto.getDescription());
-        return new ProductDTO(productRepo.save(product));
+        return new ProductDTO(productRepository.save(product));
     }
 
     public void deleteProduct(String uuid) {
-        productRepo.deleteById(uuid);
+        productRepository.deleteById(uuid);
     }
 }
