@@ -1,7 +1,5 @@
 package com.example.collapse.dto.user;
 
-import com.example.collapse.dto.product.ProductDTO;
-import com.example.collapse.entity.Order;
 import com.example.collapse.entity.User;
 import com.example.collapse.enums.Currency;
 import com.example.collapse.enums.Role;
@@ -11,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.List;
 
 @Setter
 @Getter
@@ -43,12 +40,6 @@ public class UserDTO {
 
     @Schema(description = "User role", requiredMode = Schema.RequiredMode.REQUIRED)
     private Role role;
-
-    @Schema(description = "User orders", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<Order> orders;
-
-    @Schema(description = "User cart", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ProductDTO> cart;
 
     @Schema(description = "Creation timestamp", type = "string", format = "date-time", requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant createdAt;

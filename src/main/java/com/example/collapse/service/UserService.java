@@ -1,28 +1,22 @@
 package com.example.collapse.service;
 
-import com.example.collapse.dto.product.ProductDTO;
 import com.example.collapse.dto.user.SignInUserRequestDTO;
 import com.example.collapse.dto.user.SignUpUserRequestDTO;
 import com.example.collapse.dto.user.UpdateCurrencyRequestDTO;
 import com.example.collapse.dto.user.UserDTO;
-import com.example.collapse.entity.Product;
 import com.example.collapse.entity.User;
 import com.example.collapse.exception.UnauthorizedException;
 import com.example.collapse.exception.UserAlreadyExistsException;
-import com.example.collapse.repository.ProductRepo;
-import com.example.collapse.repository.UserRepo;
-import jakarta.transaction.Transactional;
+import com.example.collapse.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepo userRepository;
-    private final ProductRepo productRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserDTO signUpUser(SignUpUserRequestDTO signUpUserRequestDTO) throws UserAlreadyExistsException {
@@ -60,31 +54,6 @@ public class UserService {
         userRepository.save(foundUser);
 
         return new UserDTO(foundUser);
-    }
-
-    public ProductDTO toggleInCart(String userUuid, String productUuid) {
-        User user = userRepository.findById(userUuid)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-
-        Product product = productRepository.findById(productUuid)
-                .orElseThrow(() -> new RuntimeException("Товар не найден"));
-
-        if (user.getCart().contains(product)) {
-            user.getCart().remove(product);
-        } else {
-            user.getCart().add(product);
-        }
-        userRepository.save(user);
-
-        return new ProductDTO(product);
-    }
-
-    @Transactional()
-    public List<ProductDTO> getCart(String userUuid) {
-        User user = userRepository.findById(userUuid)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-
-        return user.getCart().stream().map(ProductDTO::new).toList();
     }
 
     private void checkUserExists(String email, String phone) {

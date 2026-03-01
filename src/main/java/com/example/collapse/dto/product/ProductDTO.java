@@ -1,8 +1,8 @@
 package com.example.collapse.dto.product;
 
 import com.example.collapse.entity.Product;
-import com.example.collapse.enums.Colors;
-import com.example.collapse.enums.Tags;
+import com.example.collapse.enums.Color;
+import com.example.collapse.enums.Tag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
@@ -26,13 +26,13 @@ public class ProductDTO {
     private String title;
 
     @Schema(description = "Inside color", requiredMode = Schema.RequiredMode.REQUIRED)
-    private ArrayList<Colors> insideColors;
+    private ArrayList<Color> insideColors;
 
     @Schema(description = "Outside color", requiredMode = Schema.RequiredMode.REQUIRED)
-    private ArrayList<Colors> outsideColors;
+    private ArrayList<Color> outsideColors;
 
     @Schema(description = "Product tags", requiredMode = Schema.RequiredMode.REQUIRED)
-    private ArrayList<Tags> tags;
+    private ArrayList<Tag> tags;
 
     @Schema(description = "Price in BYN", requiredMode = Schema.RequiredMode.REQUIRED)
     private BigDecimal priceBYN;

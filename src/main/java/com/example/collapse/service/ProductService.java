@@ -3,7 +3,7 @@ package com.example.collapse.service;
 import com.example.collapse.dto.product.ProductDTO;
 import com.example.collapse.dto.product.ProductRequestDTO;
 import com.example.collapse.entity.Product;
-import com.example.collapse.repository.ProductRepo;
+import com.example.collapse.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepo productRepository;
+    private final ProductRepository productRepository;
 
     public ProductDTO createProduct(ProductRequestDTO dto) {
         Product product = new Product(dto);

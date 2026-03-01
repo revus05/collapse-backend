@@ -1,6 +1,6 @@
 package com.example.collapse.enums;
 
-public enum Colors {
+public enum Color {
     RED,
     GRAPHITE,
     GREEN,

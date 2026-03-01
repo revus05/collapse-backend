@@ -55,13 +55,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-        name = "user_cart_products",
-        joinColumns = @JoinColumn(name = "user_uuid"),
-        inverseJoinColumns = @JoinColumn(name = "product_uuid")
-    )
-    private List<Product> cart = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @CreatedDate
     private Instant createdAt;

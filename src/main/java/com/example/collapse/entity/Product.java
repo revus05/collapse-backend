@@ -1,8 +1,8 @@
 package com.example.collapse.entity;
 
 import com.example.collapse.dto.product.ProductRequestDTO;
-import com.example.collapse.enums.Colors;
-import com.example.collapse.enums.Tags;
+import com.example.collapse.enums.Color;
+import com.example.collapse.enums.Tag;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,13 +32,13 @@ public class Product {
     private String title;
 
     @Column(nullable = false)
-    private ArrayList<Colors> insideColors;
+    private ArrayList<Color> insideColors;
 
     @Column(nullable = false)
-    private ArrayList<Colors> outsideColors;
+    private ArrayList<Color> outsideColors;
 
     @Column(nullable = false)
-    private ArrayList<Tags> tags;
+    private ArrayList<Tag> tags;
 
     @Column(nullable = false)
     private BigDecimal priceBYN;

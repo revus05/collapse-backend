@@ -1,6 +1,6 @@
 package com.example.collapse.enums;
 
-public enum Tags {
+public enum Tag {
     BAGS,
     SALES,
     NEW,

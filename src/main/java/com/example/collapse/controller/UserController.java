@@ -1,6 +1,5 @@
 package com.example.collapse.controller;
 
-import com.example.collapse.dto.product.ProductDTO;
 import com.example.collapse.dto.response.Response;
 import com.example.collapse.dto.user.SignInUserRequestDTO;
 import com.example.collapse.dto.user.SignUpUserRequestDTO;
@@ -20,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -69,24 +67,11 @@ public class UserController {
     }
 
 
+    @UpdateCurrencyOperation
     @PostMapping("/update-currency")
     public Response updateCurrency(@Valid @RequestBody UpdateCurrencyRequestDTO updateCurrencyRequestDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDTO updatedUser = userService.updateCurrency(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername(), updateCurrencyRequestDTO);
-        return new Response("Пользователь успешно вышел", HttpStatus.OK, updatedUser);
-    }
-
-    @PostMapping("/toggle-in-cart/{productUuid}")
-    public Response addToCart(@PathVariable String productUuid) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ProductDTO product = userService.toggleInCart(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername(), productUuid);
-        return new Response("Товар успешно добавлен в корзину", HttpStatus.OK, product);
-    }
-
-    @GetMapping("/get-cart")
-    public Response getCart() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<ProductDTO> cart = userService.getCart(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername());
-        return new Response("Корзина товаров успешно получена", HttpStatus.OK, cart);
+        return new Response("Валюта пользователя успешно обновлена", HttpStatus.OK, updatedUser);
     }
 }
