@@ -1,5 +1,8 @@
 package com.example.collapse.service;
 
+import com.example.collapse.config.JwtUserPrincipal;
+import com.example.collapse.dto.user.UserDTO;
+import com.example.collapse.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +12,6 @@ import jakarta.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.crypto.SecretKey;
@@ -20,11 +22,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
+    private static final String ROLE_CLAIM = "role";
+
     @Value("${app.jwt.secret}")
     private String SECRET_KEY;
 
@@ -36,9 +39,10 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String uuid) {
+    public String generateToken(UserDTO user) {
         return Jwts.builder()
-                .subject(uuid)
+                .subject(user.getUuid())
+                .claim(ROLE_CLAIM, user.getRole().name())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
@@ -47,7 +51,9 @@ public class JwtService {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+            Claims claims = getClaims(token);
+            claims.getSubject();
+            getRoleFromClaims(claims);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -55,19 +61,32 @@ public class JwtService {
     }
 
     public String getUuidFromToken(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return getClaims(token).getSubject();
+    }
 
-        return claims.getSubject();
+    public Role getRoleFromToken(String token) {
+        return getRoleFromClaims(getClaims(token));
+    }
+
+    private Role getRoleFromClaims(Claims claims) {
+        String role = claims.get(ROLE_CLAIM, String.class);
+        if (role == null) {
+            throw new JwtException("JWT does not contain role claim");
+        }
+
+        try {
+            return Role.valueOf(role);
+        } catch (IllegalArgumentException ex) {
+            throw new JwtException("JWT contains invalid role claim", ex);
+        }
     }
 
     public Authentication getAuthentication(String token) {
         String uuid = getUuidFromToken(token);
-        List<SimpleGrantedAuthority> authorities = Collections.emptyList();
-        User principal = new User(uuid, "", authorities);
+        Role role = getRoleFromToken(token);
+        JwtUserPrincipal principal = new JwtUserPrincipal(uuid, role);
+        List<SimpleGrantedAuthority> authorities =
+                List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
@@ -112,5 +131,9 @@ public class JwtService {
             System.err.println("Invalid CORS_ORIGIN: " + origin);
         }
         return null;
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
     }
 }

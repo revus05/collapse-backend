@@ -34,6 +34,11 @@ public class GlobalExceptionHandler {
         return new Response(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public Response handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return new Response(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public Response handleGeneralException(Exception ex) {
         return new Response("Неизвестная ошибка: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,5 +1,6 @@
 package com.example.collapse.controller;
 
+import com.example.collapse.config.JwtUserPrincipal;
 import com.example.collapse.dto.cart.AddToCartRequestDTO;
 import com.example.collapse.dto.cart.CartItemDTO;
 import com.example.collapse.dto.response.Response;
@@ -10,13 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/cart")
@@ -28,17 +26,17 @@ public class CartController {
 
     @AddToCartOperation
     @PostMapping()
-    public Response addToCart(@Valid @RequestBody AddToCartRequestDTO addToCartRequestDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CartItemDTO cartItemDTO = cartService.addToCart(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername(), addToCartRequestDTO);
+    public Response addToCart(
+            @AuthenticationPrincipal JwtUserPrincipal principal,
+            @Valid @RequestBody AddToCartRequestDTO addToCartRequestDTO) {
+        CartItemDTO cartItemDTO = cartService.addToCart(principal.uuid(), addToCartRequestDTO);
         return new Response("Товар успешно добавлен в корзину", HttpStatus.OK, cartItemDTO);
     }
 
     @GetCartOperation
     @GetMapping()
-    public Response getCart() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<CartItemDTO> cart = cartService.getCart(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername());
+    public Response getCart(@AuthenticationPrincipal JwtUserPrincipal principal) {
+        List<CartItemDTO> cart = cartService.getCart(principal.uuid());
         return new Response("Корзина товаров успешно получена", HttpStatus.OK, cart);
     }
 }

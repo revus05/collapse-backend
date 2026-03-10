@@ -4,6 +4,7 @@ import com.example.collapse.service.JwtService;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,21 +37,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtService.validateToken(token)) {
             Authentication auth = jwtService.getAuthentication(token);
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if (auth != null) {
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {
-        String cookieString = request.getHeader("Cookie");
-        if (cookieString == null) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
             return null;
         }
-        String[] cookies = cookieString.split("; ");
-        for (String cookie : cookies) {
-            if (cookie.contains(JWT_COOKIE_NAME + "=")) {
-                return cookie.substring((JWT_COOKIE_NAME + "=").length());
+
+        for (Cookie cookie : cookies) {
+            if (JWT_COOKIE_NAME.equals(cookie.getName())) {
+                return cookie.getValue();
             }
         }
 

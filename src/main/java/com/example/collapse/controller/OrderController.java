@@ -1,5 +1,6 @@
 package com.example.collapse.controller;
 
+import com.example.collapse.config.JwtUserPrincipal;
 import com.example.collapse.dto.order.CreateOrderRequestDTO;
 import com.example.collapse.dto.order.OrderDTO;
 import com.example.collapse.dto.response.Response;
@@ -9,12 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/order")
@@ -26,10 +23,10 @@ public class OrderController {
 
     @CreateOrderOperation
     @PostMapping()
-    public Response createOrder(@Valid @RequestBody CreateOrderRequestDTO createOrderRequestDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        assert auth != null;
-        OrderDTO createdOrder = orderService.createOrder(((UserDetails) Objects.requireNonNull(auth.getPrincipal())).getUsername(), createOrderRequestDTO);
+    public Response createOrder(
+            @AuthenticationPrincipal JwtUserPrincipal principal,
+            @Valid @RequestBody CreateOrderRequestDTO createOrderRequestDTO) {
+        OrderDTO createdOrder = orderService.createOrder(principal.uuid(), createOrderRequestDTO);
         return new Response("Заказ успешно создан", HttpStatus.CREATED, createdOrder);
     }
 }
