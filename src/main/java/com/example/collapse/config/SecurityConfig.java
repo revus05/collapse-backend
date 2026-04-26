@@ -49,6 +49,10 @@ public class SecurityConfig {
                                         .requestMatchers("/users/admin/**")
                                         .hasRole("ADMIN")
 
+                                        // admin orders
+                                        .requestMatchers("/order/admin/**")
+                                        .hasRole("ADMIN")
+
                                         //products
                                         .requestMatchers(HttpMethod.GET, "/products", "/products/{uuid}")
                                         .permitAll()

@@ -1,6 +1,7 @@
 package com.example.collapse.entity;
 
 import com.example.collapse.enums.Currency;
+import com.example.collapse.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,19 @@ public class Order {
     @Column(nullable = false)
     private Currency currency;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column
+    private String comment;
+
     @CreatedDate
     private Instant createdAt;
 
@@ -45,9 +59,13 @@ public class Order {
 
     public Order() {}
 
-    public Order(User user, List<CartItem> cartItemsToMove) {
+    public Order(User user, List<CartItem> cartItemsToMove, String phone, String address, String comment) {
         this.user = user;
         this.orderItems = new ArrayList<>(cartItemsToMove);
+        this.status = OrderStatus.NEW;
+        this.phone = phone;
+        this.address = address;
+        this.comment = comment;
 
         if (!orderItems.isEmpty()) {
             this.currency = user.getCurrency();
