@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["gradle", "jdk21"]
+
+[phases.build]
+cmds = ["./gradlew clean build -x check -x test"]
+
+[start]
+cmd = "java $JAVA_OPTS -Dserver.port=$PORT -jar $(find build/libs -name '*.jar' ! -name '*-plain.jar' | head -1)"
